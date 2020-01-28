@@ -15,8 +15,15 @@ module S3Rotate
     #
     def FileUtils.date_from_filename(filename, date_regex=/\d{4}-\d{2}-\d{2}/)
       # match the date in the filename
-      match    = filename.match(date_regex)
-      date_str = match&.captures&.first || match&.to_s
+      match = filename.match(date_regex)
+
+      if not match
+        date_str = nil
+      elsif not match.captures
+        date_str = match.to_s
+      else
+        date_str = match.captures.first || match.to_s
+      end
 
       # if nothing could be match, immediately fail
       raise "Invalid date_regex or filename format" if not date_str

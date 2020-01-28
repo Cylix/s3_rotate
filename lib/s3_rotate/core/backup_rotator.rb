@@ -63,13 +63,13 @@ module S3Rotate
       weekly_backups = @s3_client.remote_backups(backup_name, "weekly").files
 
       # get most recent weekly file
-      recent_weekly_file = weekly_backups.last
+      recent_weekly_file = weekly_backups.last ? weekly_backups.last.key : nil
 
       # look through daily backups to find which oness should be promoted
       daily_backups.each do |backup|
         # promote to weekly if applicable
-        if should_promote_daily_to_weekly?(backup.key, recent_weekly_file&.key)
-          recent_weekly_file = promote(backup_name, backup.key, backup.body, "weekly")
+        if should_promote_daily_to_weekly?(backup.key, recent_weekly_file)
+          recent_weekly_file = promote(backup_name, backup.key, backup.body, "weekly").key
         end
       end
 
@@ -100,13 +100,13 @@ module S3Rotate
       monthly_backups = @s3_client.remote_backups(backup_name, "monthly").files
 
       # get most recent monthly file
-      recent_monthly_file = monthly_backups.last
+      recent_monthly_file = monthly_backups.last ? monthly_backups.last.key : nil
 
       # look through weekly backups to find which oness should be promoted
       weekly_backups.each do |backup|
         # promote to monthly if applicable
-        if should_promote_weekly_to_monthly?(backup.key, recent_monthly_file&.key)
-          recent_monthly_file = promote(backup_name, backup.key, backup.body, "monthly")
+        if should_promote_weekly_to_monthly?(backup.key, recent_monthly_file)
+          recent_monthly_file = promote(backup_name, backup.key, backup.body, "monthly").key
         end
       end
 

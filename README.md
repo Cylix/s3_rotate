@@ -8,6 +8,10 @@
 
 
 
+## Requirements
+- Ruby >= 2.0.0
+
+
 ## Installation
 In your `Gemfile`:
 ```bash
