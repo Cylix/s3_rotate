@@ -33,10 +33,10 @@ describe S3Rotate::BackupManager do
 
     it 'calls uploader.upload' do
       # mock
-      allow(@manager.uploader).to receive(:upload).with('backup_name', '/path/to/dir', /\d{4}-\d{2}-\d{2}/).and_return('upload_result')
+      allow(@manager.uploader).to receive(:upload).with('backup_name', '/path/to/dir', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d").and_return('upload_result')
 
       # perform test
-      expect(@manager.upload('backup_name', '/path/to/dir', /\d{4}-\d{2}-\d{2}/)).to eq 'upload_result'
+      expect(@manager.upload('backup_name', '/path/to/dir', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")).to eq 'upload_result'
     end
 
   end

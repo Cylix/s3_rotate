@@ -31,17 +31,18 @@ module S3Rotate
     # @param backup_name        String containing the name of the backup to upload
     # @param local_backups_path String containing the path to the directory containing the backups
     # @param date_regex         Regex returning the date contained in the filename of each backup
+    # @param date_format        Format to be used by DateTime.strptime to parse the extracted date
     #
     # @return nothing
     #
-    def upload(backup_name, local_backups_path, date_regex=/\d{4}-\d{2}-\d{2}/)
+    def upload(backup_name, local_backups_path, date_regex=/\d{4}-\d{2}-\d{2}/, date_format="%Y-%m-%d")
       # get backup files
       local_backups = FileUtils::files_in_directory(local_backups_path).reverse
 
       # upload local backups until we find one backup already uploaded
       local_backups.each do |local_backup|
         # parse the date & extension
-        backup_date      = FileUtils::date_from_filename(local_backup, date_regex)
+        backup_date      = FileUtils::date_from_filename(local_backup, date_regex, date_format)
         backup_extension = FileUtils::extension_from_filename(local_backup)
 
         # skip invalid files

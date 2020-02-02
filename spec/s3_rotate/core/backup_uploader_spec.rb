@@ -58,10 +58,10 @@ describe S3Rotate::BackupUploader do
       expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 5), 'daily', '.tgz', 'raw_data')
 
       expect(S3Rotate::FileUtils).to have_received(:date_from_filename).exactly(4)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-07.tgz', /\d{4}-\d{2}-\d{2}/)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-06.tgz', /\d{4}-\d{2}-\d{2}/)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-05.tgz', /\d{4}-\d{2}-\d{2}/)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-04.tgz', /\d{4}-\d{2}-\d{2}/)
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-07.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-06.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-05.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-04.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
 
       expect(S3Rotate::FileUtils).to have_received(:extension_from_filename).exactly(4)
       expect(S3Rotate::FileUtils).to have_received(:extension_from_filename).with('some-backup-2020-01-07.tgz')
@@ -92,9 +92,9 @@ describe S3Rotate::BackupUploader do
       expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 1), 'daily', nil, 'raw_data')
 
       expect(S3Rotate::FileUtils).to have_received(:date_from_filename).exactly(3)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-03.tgz', /\d{4}-\d{2}-\d{2}/)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-02.tgz', /\d{4}-\d{2}-\d{2}/)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-01.tgz', /\d{4}-\d{2}-\d{2}/)
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-03.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-02.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-01.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
 
       expect(S3Rotate::FileUtils).to have_received(:extension_from_filename).exactly(3)
       expect(S3Rotate::FileUtils).to have_received(:extension_from_filename).with('some-backup-2020-01-03.tgz')
@@ -130,9 +130,9 @@ describe S3Rotate::BackupUploader do
       expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 1), 'daily', '.tgz', 'raw_data')
 
       expect(S3Rotate::FileUtils).to have_received(:date_from_filename).exactly(3)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-03.tgz', /\d{4}-\d{2}-\d{2}/)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-02.tgz', /\d{4}-\d{2}-\d{2}/)
-      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-01.tgz', /\d{4}-\d{2}-\d{2}/)
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-03.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-02.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
+      expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-01.tgz', /\d{4}-\d{2}-\d{2}/, "%Y-%m-%d")
 
       expect(S3Rotate::FileUtils).to have_received(:extension_from_filename).exactly(3)
       expect(S3Rotate::FileUtils).to have_received(:extension_from_filename).with('some-backup-2020-01-03.tgz')

@@ -34,11 +34,12 @@ module S3Rotate
     # @param backup_name        String containing the name of the backup to upload
     # @param local_backups_path String containing the path to the directory containing the backups
     # @param date_regex         Regex returning the date contained in the filename of each backup
+    # @param date_format        Format to be used by DateTime.strptime to parse the extracted date
     #
     # @return nothing
     #
-    def upload(backup_name, local_backups_path, date_regex=/\d{4}-\d{2}-\d{2}/)
-      @uploader.upload(backup_name, local_backups_path, date_regex)
+    def upload(backup_name, local_backups_path, date_regex=/\d{4}-\d{2}-\d{2}/, date_format="%Y-%m-%d")
+      @uploader.upload(backup_name, local_backups_path, date_regex, date_format)
     end
 
     #

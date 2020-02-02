@@ -1,5 +1,6 @@
 # s3_rotate
 require 's3_rotate/utils/file_utils'
+require 's3_rotate/utils/logging'
 
 module S3Rotate
 
@@ -8,6 +9,9 @@ module S3Rotate
   # Handles backup rotation locally and on S3
   #
   class BackupRotator
+
+    # logger
+    include Logging
 
     # attributes
     attr_accessor :s3_client
@@ -75,7 +79,12 @@ module S3Rotate
 
       # cleanup old files
       if daily_backups.length > max_daily
-        daily_backups.each_with_index { |backup, i| backup.destroy if i < daily_backups.length - max_daily }
+        daily_backups.each_with_index do |backup, i|
+          if i < daily_backups.length - max_daily
+            logger.info("removing #{backup.key}")
+            backup.destroy
+          end
+        end
       end
     end
 
@@ -112,7 +121,12 @@ module S3Rotate
 
       # cleanup old files
       if weekly_backups.length > max_weekly
-        weekly_backups.each_with_index { |backup, i| backup.destroy if i < weekly_backups.length - max_weekly }
+        weekly_backups.each_with_index do |backup, i|
+          if i < weekly_backups.length - max_weekly
+            logger.info("removing #{backup.key}")
+            backup.destroy
+          end
+        end
       end
     end
 
@@ -132,7 +146,12 @@ module S3Rotate
 
       # cleanup old files
       if monthly_backups.length > max_monthly
-        monthly_backups.each_with_index { |backup, i| backup.destroy if i < monthly_backups.length - max_monthly }
+        monthly_backups.each_with_index do |backup, i|
+          if i < monthly_backups.length - max_monthly
+            logger.info("removing #{backup.key}")
+            backup.destroy
+          end
+        end
       end
     end
 
@@ -152,7 +171,10 @@ module S3Rotate
 
       # cleanup old files
       if local_backups.length > max_local
-        local_backups[0..(local_backups.length - max_local - 1)].each { |backup| File.delete("#{local_backups_path}/#{backup}") }
+        local_backups[0..(local_backups.length - max_local - 1)].each do |backup|
+          logger.info("removing #{local_backups_path}/#{backup}")
+          File.delete("#{local_backups_path}/#{backup}")
+        end
       end
     end
 

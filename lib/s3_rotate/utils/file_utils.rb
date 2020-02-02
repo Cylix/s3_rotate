@@ -10,10 +10,11 @@ module S3Rotate
     #
     # @param filename     String containing the filename to be parsed.
     # @param date_regex   Regex returning the date contained in the filename
+    # @param date_format  Format to be used by DateTime.strptime to parse the extracted date
     #
     # @return Date instance, representing the parsed date
     #
-    def FileUtils.date_from_filename(filename, date_regex=/\d{4}-\d{2}-\d{2}/)
+    def FileUtils.date_from_filename(filename, date_regex=/\d{4}-\d{2}-\d{2}/, date_format="%Y-%m-%d")
       # match the date in the filename
       match = filename.match(date_regex)
 
@@ -30,12 +31,7 @@ module S3Rotate
 
       # regular date
       begin
-        if date_str.include?("-")
-          Date.parse(date_str)
-        # timestamp
-        else
-          DateTime.strptime(date_str, "%s").to_date
-        end
+        DateTime.strptime(date_str, date_format).to_date
       rescue
         raise "Date format not supported"
       end

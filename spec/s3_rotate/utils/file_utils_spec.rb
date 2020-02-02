@@ -13,15 +13,15 @@ describe S3Rotate::FileUtils do
     end
 
     it 'parses timestamp formats' do
-      expect(S3Rotate::FileUtils::date_from_filename("/path/to/file-1580098737-backup.tar.gz", /file-(\d+)-backup.tar.gz/)).to eq Date.new(2020, 1, 27)
+      expect(S3Rotate::FileUtils::date_from_filename("/path/to/file-1580098737-backup.tar.gz", /file-(\d+)-backup.tar.gz/, "%s")).to eq Date.new(2020, 1, 27)
     end
 
     it 'raises if the regex matched nothing' do
-      expect{ S3Rotate::FileUtils::date_from_filename("/path/to/file-1580098737-backup.tar.gz") }.to raise_error(RuntimeError, "Invalid date_regex or filename format")
+      expect{ S3Rotate::FileUtils::date_from_filename("/path/to/file-1580098737-backup.tar.gz", /\d{4}-\d{2}-\d{2}/, "%s") }.to raise_error(RuntimeError, "Invalid date_regex or filename format")
     end
 
-    it 'raises if the regex matched nothing' do
-      expect{ S3Rotate::FileUtils::date_from_filename("/path/to/file-1580098737-backup.tar.gz", /file-\d+-backup.tar.gz/) }.to raise_error(RuntimeError, "Date format not supported")
+    it 'raises if the matched string can not be parsed' do
+      expect{ S3Rotate::FileUtils::date_from_filename("/path/to/file-1580098737-backup.tar.gz", /file-\d+-backup.tar.gz/, "%s") }.to raise_error(RuntimeError, "Date format not supported")
     end
 
   end

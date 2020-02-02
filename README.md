@@ -147,10 +147,11 @@ Prototype:
 # @param backup_name        String containing the name of the backup to upload
 # @param local_backups_path String containing the path to the directory containing the backups
 # @param date_regex         Regex returning the date contained in the filename of each backup
+# @param date_format        Format to be used by DateTime.strptime to parse the extracted date
 #
 # @return nothing
 #
-def upload(backup_name, local_backups_path, date_regex=/\d{4}-\d{2}-\d{2}/)
+def upload(backup_name, local_backups_path, date_regex=/\d{4}-\d{2}-\d{2}/, date_format="%Y-%m-%d")
 ```
 
 Example:
@@ -165,14 +166,11 @@ backup_manager.upload("defect-dojo-backup", "/var/opt/defect-dojo/backups")
 - `backup_name`: This is how you want to name your group of backup. This will be used to create a directory on the AWS S3 bucket under which your backup will be stored. It can be anything you want
 - `local_backups_path`: This is the path to the local directory containing your backups to be uploaded
 - `date_regex`: To rotate backups from daily to weekly, and from weekly to monthly, `S3 Backup` needs to determine which date is related to each backup file. This is done by extracting the date information from the filename, using a regex specified in `date_regex`.
+- `date_format`: This complements `date_regex` and gives the format to be used to convert the string matched by `date_regex` into a `Date` object using `DateTime.strptime`.
 
-`date_regex` is the most important part here: without it, `S3 Rotate` does not know when your backup was generated and can not rotate your backups properly. Here are some examples of regex:
-- if your backups are like `1578804325_2020_01_11_12.6.2_gitlab_backup.tar`, you can use `date_regex=/\d{4}-\d{2}-\d{2}/` (this will match `2020_01_11_12`)
-- if your backups are like `1578804325_gitlab_backup.tar`, you can use `date_regex=/(\d+)_gitlab_backup.tar/` (this will match `1578804325`)
-
-As of now, `date_regex` can be:
-- any string that can be parsed by `Date.parse`
-- a timestamp
+`date_regex` & `date_format` is the most important part here: without it, `S3 Rotate` does not know when your backup was generated and can not rotate your backups properly. Here are some examples of regex:
+- if your backups are like `1578804325_2020_01_11_12.6.2_gitlab_backup.tar`, you can use `date_regex=/\d{4}-\d{2}-\d{2}/` (this will match `2020_01_11_12`) & `date_format="%Y-%m-%d"`
+- if your backups are like `1578804325_gitlab_backup.tar`, you can use `date_regex=/(\d+)_gitlab_backup.tar/` (this will match `1578804325`) % `date_format="%s"`
 
 ### S3Rotate::BackupManager.rotate
 Prototype:

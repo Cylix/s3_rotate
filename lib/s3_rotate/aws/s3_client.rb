@@ -1,8 +1,14 @@
 require 'fog-aws'
+require 'logger'
+
+require 's3_rotate/utils/logging'
 
 module S3Rotate
 
   class S3Client
+
+    # logger
+    include Logging
 
     # attributes
     attr_accessor :access_key
@@ -84,6 +90,8 @@ module S3Rotate
     # @return created S3 Bucket File
     #
     def upload(backup_name, backup_date, type, extension, data)
+      logger.info("uploading /#{backup_name}/#{type}/#{backup_date.to_s}#{extension}")
+
       # 104857600 bytes => 100 megabytes
       bucket.files.create(key: "/#{backup_name}/#{type}/#{backup_date.to_s}#{extension}", body: data, multipart_chunk_size: 104857600)
     end
@@ -98,6 +106,8 @@ module S3Rotate
     # @return created S3 Bucket File
     #
     def copy(backup_name, file, type)
+      logger.info("copying #{file.key} to /#{backup_name}/#{type}/#{file.key.split('/').last}")
+
       # 104857600 bytes => 100 megabytes
       file.copy(@bucket_name, "/#{backup_name}/#{type}/#{file.key.split('/').last}")
     end
