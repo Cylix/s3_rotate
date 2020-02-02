@@ -51,7 +51,7 @@ module S3Rotate
         break if @s3_client.exists?(backup_name, backup_date, "daily", extension=backup_extension)
 
         # upload file
-        @s3_client.upload(backup_name, backup_date, "daily", backup_extension, File.open(local_backup))
+        @s3_client.upload(backup_name, backup_date, "daily", backup_extension, File.open("#{local_backups_path}/#{local_backup}"))
       end
     end
 
