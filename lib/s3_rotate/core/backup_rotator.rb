@@ -69,7 +69,7 @@ module S3Rotate
       daily_backups.each do |backup|
         # promote to weekly if applicable
         if should_promote_daily_to_weekly?(backup.key, recent_weekly_file)
-          recent_weekly_file = promote(backup_name, backup.key, backup.body, "weekly").key
+          recent_weekly_file = promote(backup_name, backup, "weekly").key
         end
       end
 
@@ -106,7 +106,7 @@ module S3Rotate
       weekly_backups.each do |backup|
         # promote to monthly if applicable
         if should_promote_weekly_to_monthly?(backup.key, recent_monthly_file)
-          recent_monthly_file = promote(backup_name, backup.key, backup.body, "monthly").key
+          recent_monthly_file = promote(backup_name, backup, "monthly").key
         end
       end
 
@@ -215,23 +215,17 @@ module S3Rotate
     end
 
     #
-    # Promote a daily backup into a weekly backup
+    # Promote a backup into a different type of backup backup (for example, daily into weekly)
     # This operation keeps the original daily file, and creates a new weekly backup
     #
     # @param backup_name   String containing the name of the backup being updated
-    # @param filename      String, filename of the backup you want to promote
-    # @param body          String, body of the file you want to promote
-    # @param type          String representing the type of backup being uploaded, one of "daily", "weekly" or "monthly"
+    # @param file          S3 File, file to be promoted
+    # @param type          String representing the type the backup is being promoted into, one of "daily", "weekly" or "monthly"
     #
     # @return created S3 Bucket File
     #
-    def promote(backup_name, filename, body, type)
-      # parse the date & extension
-      backup_date      = FileUtils::date_from_filename(filename)
-      backup_extension = FileUtils::extension_from_filename(filename)
-
-      # upload
-      @s3_client.upload(backup_name, backup_date, type, backup_extension, body)
+    def promote(backup_name, file, type)
+      @s3_client.copy(backup_name, file, type)
     end
 
   end

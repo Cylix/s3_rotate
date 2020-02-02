@@ -748,24 +748,21 @@ describe S3Rotate::BackupRotator do
 
   describe '#promote' do
 
-    it 'promotes backup with extension' do
+    it 'promotes backup' do
+      # mock data
+      file = @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
+
       # perform test
-      @rotator.promote('backup_name', '/gitlab/daily/2020-01-02.tgz', 'some data', 'weekly')
+      @rotator.promote('backup_name', file, 'weekly')
 
       # verify result
       expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-02.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-12.tgz'
       expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-    end
 
-    it 'promotes backup without extension' do
-      # perform test
-      @rotator.promote('backup_name', '/gitlab/daily/2020-01-02', 'some data', 'weekly')
-
-      # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-02'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
     end
 
   end

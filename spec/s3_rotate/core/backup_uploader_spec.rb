@@ -45,17 +45,17 @@ describe S3Rotate::BackupUploader do
         'some-backup-2020-01-06.tgz',
         'some-backup-2020-01-07.tgz'
       ])
-      allow(@client).to receive(:upload_local_backup_to_s3).and_return nil
+      allow(@client).to receive(:upload).and_return nil
       allow(File).to receive(:open).and_return "raw_data"
 
       # perform test
       @uploader.upload('backup_name', '/path/to/dir')
 
       # verify result
-      expect(@client).to have_received(:upload_local_backup_to_s3).exactly(3)
-      expect(@client).to have_received(:upload_local_backup_to_s3).with('backup_name', Date.new(2020, 1, 7), 'daily', '.tgz', 'raw_data')
-      expect(@client).to have_received(:upload_local_backup_to_s3).with('backup_name', Date.new(2020, 1, 6), 'daily', '.tgz', 'raw_data')
-      expect(@client).to have_received(:upload_local_backup_to_s3).with('backup_name', Date.new(2020, 1, 5), 'daily', '.tgz', 'raw_data')
+      expect(@client).to have_received(:upload).exactly(3)
+      expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 7), 'daily', '.tgz', 'raw_data')
+      expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 6), 'daily', '.tgz', 'raw_data')
+      expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 5), 'daily', '.tgz', 'raw_data')
 
       expect(S3Rotate::FileUtils).to have_received(:date_from_filename).exactly(4)
       expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-07.tgz', /\d{4}-\d{2}-\d{2}/)
@@ -79,17 +79,17 @@ describe S3Rotate::BackupUploader do
         'some-backup-2020-01-02.tgz',
         'some-backup-2020-01-03.tgz',
       ])
-      allow(@client).to receive(:upload_local_backup_to_s3).and_return nil
+      allow(@client).to receive(:upload).and_return nil
       allow(File).to receive(:open).and_return "raw_data"
 
       # perform test
       @uploader.upload('backup_name', '/path/to/dir')
 
       # verify result
-      expect(@client).to have_received(:upload_local_backup_to_s3).exactly(3)
-      expect(@client).to have_received(:upload_local_backup_to_s3).with('backup_name', Date.new(2020, 1, 3), 'daily', nil, 'raw_data')
-      expect(@client).to have_received(:upload_local_backup_to_s3).with('backup_name', Date.new(2020, 1, 2), 'daily', nil, 'raw_data')
-      expect(@client).to have_received(:upload_local_backup_to_s3).with('backup_name', Date.new(2020, 1, 1), 'daily', nil, 'raw_data')
+      expect(@client).to have_received(:upload).exactly(3)
+      expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 3), 'daily', nil, 'raw_data')
+      expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 2), 'daily', nil, 'raw_data')
+      expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 1), 'daily', nil, 'raw_data')
 
       expect(S3Rotate::FileUtils).to have_received(:date_from_filename).exactly(3)
       expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-03.tgz', /\d{4}-\d{2}-\d{2}/)
@@ -118,16 +118,16 @@ describe S3Rotate::BackupUploader do
         'some-backup-2020-01-02.tgz',
         'some-backup-2020-01-03.tgz',
       ])
-      allow(@client).to receive(:upload_local_backup_to_s3).and_return nil
+      allow(@client).to receive(:upload).and_return nil
       allow(File).to receive(:open).and_return "raw_data"
 
       # perform test
       @uploader.upload('backup_name', '/path/to/dir')
 
       # verify result
-      expect(@client).to have_received(:upload_local_backup_to_s3).exactly(2)
-      expect(@client).to have_received(:upload_local_backup_to_s3).with('backup_name', Date.new(2020, 1, 3), 'daily', '.tgz', 'raw_data')
-      expect(@client).to have_received(:upload_local_backup_to_s3).with('backup_name', Date.new(2020, 1, 1), 'daily', '.tgz', 'raw_data')
+      expect(@client).to have_received(:upload).exactly(2)
+      expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 3), 'daily', '.tgz', 'raw_data')
+      expect(@client).to have_received(:upload).with('backup_name', Date.new(2020, 1, 1), 'daily', '.tgz', 'raw_data')
 
       expect(S3Rotate::FileUtils).to have_received(:date_from_filename).exactly(3)
       expect(S3Rotate::FileUtils).to have_received(:date_from_filename).with('some-backup-2020-01-03.tgz', /\d{4}-\d{2}-\d{2}/)

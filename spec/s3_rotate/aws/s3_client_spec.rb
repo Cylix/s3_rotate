@@ -125,4 +125,25 @@ describe S3Rotate::S3Client do
 
   end
 
+  describe '#copy' do
+
+    it 'copies backup' do
+      # mock data
+      file = @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
+
+      # perform test
+      @client.copy('backup_name', file, 'weekly')
+
+      # verify result
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
+
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
+    end
+
+  end
+
 end

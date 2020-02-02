@@ -88,6 +88,20 @@ module S3Rotate
       bucket.files.create(key: "/#{backup_name}/#{type}/#{backup_date.to_s}#{extension}", body: data, multipart_chunk_size: 104857600)
     end
 
+    #
+    # Copy an existing file on AWS S3
+    #
+    # @param backup_name   String containing the name of the backup being updated
+    # @param file          S3 File, file to be copied
+    # @param type          String representing the type the backup is being copied to, one of "daily", "weekly" or "monthly"
+    #
+    # @return created S3 Bucket File
+    #
+    def copy(backup_name, file, type)
+      # 104857600 bytes => 100 megabytes
+      file.copy(@bucket_name, "/#{backup_name}/#{type}/#{file.key.split('/').last}")
+    end
+
   end
 
 end
