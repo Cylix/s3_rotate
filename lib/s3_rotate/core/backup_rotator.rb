@@ -204,7 +204,7 @@ module S3Rotate
       end
 
       # perform date comparison
-      return (date_daily_file - date_weekly_file).abs >= 7
+      return date_daily_file - date_weekly_file >= 7
     end
 
     #
