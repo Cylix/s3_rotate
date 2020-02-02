@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/Whova/s3_rotate'
   s.license     = 'MIT'
 
-  s.version     = '1.0.1'
+  s.version     = '1.1.0'
   s.date        = Date.today.to_s
 
   s.authors     = ["Simon Ninon"]
