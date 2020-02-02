@@ -19,11 +19,11 @@ end
 backup_manager = S3Rotate::BackupManager.new(aws_access_key_id, aws_access_key_secret, bucket_name, region)
 
 # Upload backups to S3
-backup_manager.upload("backup-dojo", "/data/dojo", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y-%m-%d")
-backup_manager.upload("backup-gitlab", "/data/gitlab/app-backup", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y-%m-%d")
-backup_manager.upload("backup-splunk", "/data/splunk/backup", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y-%m-%d")
-backup_manager.upload("backup-taiga", "/data/taiga", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y-%m-%d")
-backup_manager.upload("backup-trac", "/data/trac/backup", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y-%m-%d")
+backup_manager.upload("backup-dojo", "/data/dojo", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y_%m_%d")
+backup_manager.upload("backup-gitlab", "/data/gitlab/app-backup", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y_%m_%d")
+backup_manager.upload("backup-splunk", "/data/splunk/backup", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y_%m_%d")
+backup_manager.upload("backup-taiga", "/data/taiga", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y_%m_%d")
+backup_manager.upload("backup-trac", "/data/trac/backup", date_regex=/\d{4}_\d{2}_\d{2}/, date_format="%Y_%m_%d")
 
 # Rotate backups
 backup_manager.rotate("backup-dojo", "/data/dojo", max_local=3, max_daily=14, max_weekly=8, max_monthly=6)

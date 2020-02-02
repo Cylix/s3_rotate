@@ -33,7 +33,7 @@ module S3Rotate
       begin
         DateTime.strptime(date_str, date_format).to_date
       rescue
-        raise "Date format not supported"
+        raise "Invalid date_format"
       end
     end
 

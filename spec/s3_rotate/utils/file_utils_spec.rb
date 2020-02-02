@@ -21,7 +21,7 @@ describe S3Rotate::FileUtils do
     end
 
     it 'raises if the matched string can not be parsed' do
-      expect{ S3Rotate::FileUtils::date_from_filename("/path/to/file-1580098737-backup.tar.gz", /file-\d+-backup.tar.gz/, "%s") }.to raise_error(RuntimeError, "Date format not supported")
+      expect{ S3Rotate::FileUtils::date_from_filename("/path/to/file-1580098737-backup.tar.gz", /file-\d+-backup.tar.gz/, "%s") }.to raise_error(RuntimeError, "Invalid date_format")
     end
 
   end
