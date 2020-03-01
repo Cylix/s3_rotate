@@ -65,23 +65,23 @@ describe S3Rotate::S3Client do
   describe '#remote_backups' do
 
     before do
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-01.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-02.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-02-03.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2021-02-04.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-01-03.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-04.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-05.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-01.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-02.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-02-03.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2021-02-04.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-01-03.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-04.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-05.tgz', body: 'some data')
     end
 
     it 'gets the remote backups' do
       expect(@client.remote_backups('backup_name', 'daily')).not_to eq nil
       expect(@client.remote_backups('backup_name', 'daily').files).not_to eq nil
       expect(@client.remote_backups('backup_name', 'daily').files.length).to eq 4
-      expect(@client.remote_backups('backup_name', 'daily').files[0].key).to eq "/backup_name/daily/2020-01-01.tgz"
-      expect(@client.remote_backups('backup_name', 'daily').files[1].key).to eq "/backup_name/daily/2020-01-02.tgz"
-      expect(@client.remote_backups('backup_name', 'daily').files[2].key).to eq "/backup_name/daily/2020-02-03.tgz"
-      expect(@client.remote_backups('backup_name', 'daily').files[3].key).to eq "/backup_name/daily/2021-02-04.tgz"
+      expect(@client.remote_backups('backup_name', 'daily').files[0].key).to eq "backup_name/daily/2020-01-01.tgz"
+      expect(@client.remote_backups('backup_name', 'daily').files[1].key).to eq "backup_name/daily/2020-01-02.tgz"
+      expect(@client.remote_backups('backup_name', 'daily').files[2].key).to eq "backup_name/daily/2020-02-03.tgz"
+      expect(@client.remote_backups('backup_name', 'daily').files[3].key).to eq "backup_name/daily/2021-02-04.tgz"
     end
 
   end
@@ -89,7 +89,7 @@ describe S3Rotate::S3Client do
   describe '#exists?' do
 
     before do
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-01.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-01.tgz', body: 'some data')
     end
 
     it 'returns true for existing backups' do
@@ -118,9 +118,9 @@ describe S3Rotate::S3Client do
 
     it 'uploads files' do
       @client.upload('backup_name', Date.new(2020, 1, 1), 'daily', '.tgz', 'hello world')
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily/2020-01-01.tgz').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily/2020-01-01.tgz').files.first.key).to eq '/backup_name/daily/2020-01-01.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily/2020-01-01.tgz').files.first.body).to eq 'hello world'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily/2020-01-01.tgz').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily/2020-01-01.tgz').files.first.key).to eq 'backup_name/daily/2020-01-01.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily/2020-01-01.tgz').files.first.body).to eq 'hello world'
     end
 
   end
@@ -129,19 +129,19 @@ describe S3Rotate::S3Client do
 
     it 'copies backup' do
       # mock data
-      file = @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
+      file = @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
 
       # perform test
       @client.copy('backup_name', file, 'weekly')
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
     end
 
   end

@@ -49,197 +49,197 @@ describe S3Rotate::BackupRotator do
 
     it 'rotates and cleanup when relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_daily('backup_name', 3)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 3
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 3
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
     it 'only cleanup when relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-01-11.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-01-11.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_daily('backup_name', 3)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 3
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 3
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-11.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-01-11.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
     it 'only rotates when relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_daily('backup_name', 3)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 3
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 3
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
     it 'rotates multiples when relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-20.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-21.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-24.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-27.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-29.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-20.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-21.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-24.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-27.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-29.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_daily('backup_name', 3)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 3
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-24.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-27.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-29.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 3
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-24.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-27.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-29.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 4
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[2].key).to eq '/backup_name/weekly/2020-01-20.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[3].key).to eq '/backup_name/weekly/2020-01-27.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 4
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[2].key).to eq 'backup_name/weekly/2020-01-20.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[3].key).to eq 'backup_name/weekly/2020-01-27.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[3].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
     it 'always promote when there is no weekly backup' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_daily('backup_name', 3)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 3
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 3
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
     it 'does nothing where there is no daily backup' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_daily('backup_name', 3)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 0
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 0
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-06.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-06.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
   end
@@ -248,265 +248,265 @@ describe S3Rotate::BackupRotator do
 
     it 'rotates and cleanup when relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-07.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-21.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-28.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-21.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-28.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_weekly('backup_name', 2)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 6
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 6
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-02-21.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-02-28.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-02-21.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-02-28.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[1].key).to eq '/backup_name/monthly/2020-02-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[1].key).to eq 'backup_name/monthly/2020-02-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[1].body).to eq 'some data'
     end
 
     it 'only cleanup when relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-07.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-21.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-28.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-29.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-21.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-28.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-29.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_weekly('backup_name', 2)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 6
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 6
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-02-21.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-02-28.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-02-21.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-02-28.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-29.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-29.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
     it 'only rotates when relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-07.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_weekly('backup_name', 2)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 6
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 6
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-02-07.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-02-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-02-07.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-02-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[1].key).to eq '/backup_name/monthly/2020-02-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[1].key).to eq 'backup_name/monthly/2020-02-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[1].body).to eq 'some data'
     end
 
     it 'rotates multiple when relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-07.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-03-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-03-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-04-05.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-04-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-03-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-03-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-04-05.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-04-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_weekly('backup_name', 2)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 6
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 6
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-04-05.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-04-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-04-05.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-04-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 3
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[1].key).to eq '/backup_name/monthly/2020-02-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[2].key).to eq '/backup_name/monthly/2020-04-05.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 3
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[1].key).to eq 'backup_name/monthly/2020-02-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[2].key).to eq 'backup_name/monthly/2020-04-05.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[2].body).to eq 'some data'
     end
 
     it 'always promote when there is no monthly backup' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-07.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-21.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-28.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-21.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-28.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_weekly('backup_name', 2)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 6
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 6
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-02-21.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-02-28.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-02-21.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-02-28.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-02-07.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-02-07.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
     it 'does nothing where there is no weekly backup' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_weekly('backup_name', 2)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 6
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 6
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 0
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 0
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
   end
@@ -515,148 +515,148 @@ describe S3Rotate::BackupRotator do
 
     it 'cleanup when relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-07.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-21.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-28.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-02-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-03-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-04-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-21.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-28.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-02-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-03-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-04-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_monthly('backup_name', 2)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 6
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 6
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 4
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-02-07.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-02-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[2].key).to eq '/backup_name/weekly/2020-02-21.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[3].key).to eq '/backup_name/weekly/2020-02-28.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 4
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-02-07.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-02-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[2].key).to eq 'backup_name/weekly/2020-02-21.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[3].key).to eq 'backup_name/weekly/2020-02-28.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[3].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 2
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-03-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[1].key).to eq '/backup_name/monthly/2020-04-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 2
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-03-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[1].key).to eq 'backup_name/monthly/2020-04-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[1].body).to eq 'some data'
     end
 
     it 'does not cleanup if not relevant' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-07.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-21.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-28.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-21.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-28.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_monthly('backup_name', 2)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 6
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 6
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 4
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-02-07.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-02-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[2].key).to eq '/backup_name/weekly/2020-02-21.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[3].key).to eq '/backup_name/weekly/2020-02-28.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 4
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-02-07.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-02-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[2].key).to eq 'backup_name/weekly/2020-02-21.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[3].key).to eq 'backup_name/weekly/2020-02-28.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[3].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].key).to eq '/backup_name/monthly/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].key).to eq 'backup_name/monthly/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files[0].body).to eq 'some data'
     end
 
     it 'does nothing if there is no monthly backup' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-13.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-15.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-16.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-17.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-07.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-14.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-21.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-02-28.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-13.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-15.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-16.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-17.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-14.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-21.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-02-28.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       # perform test
       @rotator.rotate_monthly('backup_name', 2)
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 6
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].key).to eq '/backup_name/daily/2020-01-13.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].key).to eq '/backup_name/daily/2020-01-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].key).to eq '/backup_name/daily/2020-01-15.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[3].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].key).to eq '/backup_name/daily/2020-01-16.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[4].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].key).to eq '/backup_name/daily/2020-01-17.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[5].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 6
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].key).to eq 'backup_name/daily/2020-01-13.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].key).to eq 'backup_name/daily/2020-01-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].key).to eq 'backup_name/daily/2020-01-15.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].key).to eq 'backup_name/daily/2020-01-16.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[4].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].key).to eq 'backup_name/daily/2020-01-17.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[5].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 4
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-02-07.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].key).to eq '/backup_name/weekly/2020-02-14.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[1].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[2].key).to eq '/backup_name/weekly/2020-02-21.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[2].body).to eq 'some data'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[3].key).to eq '/backup_name/weekly/2020-02-28.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[3].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 4
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-02-07.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].key).to eq 'backup_name/weekly/2020-02-14.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[1].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[2].key).to eq 'backup_name/weekly/2020-02-21.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[2].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[3].key).to eq 'backup_name/weekly/2020-02-28.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[3].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/monthly').files.length).to eq 0
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/monthly').files.length).to eq 0
     end
 
   end
@@ -750,19 +750,19 @@ describe S3Rotate::BackupRotator do
 
     it 'promotes backup' do
       # mock data
-      file = @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-12.tgz', body: 'some data')
+      file = @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-12.tgz', body: 'some data')
 
       # perform test
       @rotator.promote('backup_name', file, 'weekly')
 
       # verify result
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].key).to eq '/backup_name/weekly/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/weekly').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].key).to eq 'backup_name/weekly/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/weekly').files[0].body).to eq 'some data'
 
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files.length).to eq 1
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].key).to eq '/backup_name/daily/2020-01-12.tgz'
-      expect(@client.connection.directories.get('bucket', prefix: '/backup_name/daily').files[0].body).to eq 'some data'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files.length).to eq 1
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].key).to eq 'backup_name/daily/2020-01-12.tgz'
+      expect(@client.connection.directories.get('bucket', prefix: 'backup_name/daily').files[0].body).to eq 'some data'
     end
 
   end

@@ -61,7 +61,7 @@ module S3Rotate
     # @return Fog::Storage::AWS::Directory instance.
     #
     def remote_backups(backup_name, type)
-      connection.directories.get(bucket_name, prefix: "/#{backup_name}/#{type}")
+      connection.directories.get(bucket_name, prefix: "#{backup_name}/#{type}")
     end
 
     #
@@ -75,7 +75,7 @@ module S3Rotate
     # @return Boolean, True or False, whether the remote backup exists
     #
     def exists?(backup_name, backup_date, type, extension=nil)
-      connection.directories.get(bucket_name, prefix: "/#{backup_name}/#{type}/#{backup_date.to_s}#{extension}").files.any?
+      connection.directories.get(bucket_name, prefix: "#{backup_name}/#{type}/#{backup_date.to_s}#{extension}").files.any?
     end
 
     #
@@ -90,10 +90,10 @@ module S3Rotate
     # @return created S3 Bucket File
     #
     def upload(backup_name, backup_date, type, extension, data)
-      logger.info("uploading /#{backup_name}/#{type}/#{backup_date.to_s}#{extension}")
+      logger.info("uploading #{backup_name}/#{type}/#{backup_date.to_s}#{extension}")
 
       # 104857600 bytes => 100 megabytes
-      bucket.files.create(key: "/#{backup_name}/#{type}/#{backup_date.to_s}#{extension}", body: data, multipart_chunk_size: 104857600)
+      bucket.files.create(key: "#{backup_name}/#{type}/#{backup_date.to_s}#{extension}", body: data, multipart_chunk_size: 104857600)
     end
 
     #
@@ -106,10 +106,25 @@ module S3Rotate
     # @return created S3 Bucket File
     #
     def copy(backup_name, file, type)
-      logger.info("copying #{file.key} to /#{backup_name}/#{type}/#{file.key.split('/').last}")
+      logger.info("copying #{file.key} to #{backup_name}/#{type}/#{file.key.split('/').last}")
+
+      # can't copy files >5GB
+      # need to download them first, then re-upload them using multipart upload
+      # also download them to disk to prevent exceeding memory limits
+      open("s3_rotate.download.tmp", 'w+') do |f|
+        bucket.files.get(file.key) do |chunk,remaining_bytes,total_bytes|
+          f.write chunk
+        end
+      end
 
       # 104857600 bytes => 100 megabytes
-      file.copy(@bucket_name, "/#{backup_name}/#{type}/#{file.key.split('/').last}")
+      remote_file = bucket.files.create(key: "#{backup_name}/#{type}/#{file.key.split('/').last}", body: File.open("s3_rotate.download.tmp"), multipart_chunk_size: 104857600)
+
+      # cleanup
+      File.delete("s3_rotate.download.tmp")
+
+      # return remote file
+      remote_file
     end
 
   end

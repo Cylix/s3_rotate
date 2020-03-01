@@ -27,12 +27,12 @@ describe S3Rotate::BackupUploader do
 
     it 'uploads all the new files until reaching an already uploaded file' do
       # mock
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-02.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-03.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/daily/2020-01-04.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/weekly/2020-01-05.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/backup_name/monthly/2020-01-06.tgz', body: 'some data')
-      @client.connection.directories.get('bucket').files.create(key: '/other_backup_name/daily/2020-01-07.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-02.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-03.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/daily/2020-01-04.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/weekly/2020-01-05.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'backup_name/monthly/2020-01-06.tgz', body: 'some data')
+      @client.connection.directories.get('bucket').files.create(key: 'other_backup_name/daily/2020-01-07.tgz', body: 'some data')
 
       allow(S3Rotate::FileUtils).to receive(:date_from_filename).and_call_original
       allow(S3Rotate::FileUtils).to receive(:extension_from_filename).and_call_original
